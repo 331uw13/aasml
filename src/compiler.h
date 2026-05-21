@@ -3,19 +3,16 @@
 
 
 #include <stddef.h>
-#include "token.h"
 #include "log.h"
+#include "token.h"
+#include "ir_codegen.h"
+#include "codegen/codegen.h"
 
 
 
-extern const char* token_kind_to_str(TokenKind kind);
 extern TokenArray* tokenize_data(char* data, size_t size);
-
-
-
-extern void check_syntax(TokenArray* token_array);
-
-
+//extern void        check_syntax(TokenArray* token_array);
+extern IRcmdArray* intermediate_codegen(TokenArray* token_array);
 
 
 

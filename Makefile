@@ -17,6 +17,7 @@ all: $(TARGET)
 
 
 $(OBJ_FILES): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(shell dirname $@)
 	@echo "$<"
 	@$(CC) $(CCFLAGS) -c $< -o $@
 

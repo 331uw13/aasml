@@ -16,6 +16,10 @@ TokenMapEntry;
 static const TokenMapEntry TOKEN_MAP[] = {
     { .kind = TOK_VAR, .text = "var" },
     { .kind = TOK_MOV, .text = "mov" },
+    { .kind = TOK_ADD, .text = "add" },
+    { .kind = TOK_SUB, .text = "sub" },
+    { .kind = TOK_MUL, .text = "mul" },
+    { .kind = TOK_DIV, .text = "div" },
     { .kind = TOK_FUNC, .text = ".func" },
     { .kind = TOK_O_PAREN, .text = "(" },
     { .kind = TOK_C_PAREN, .text = ")" },
@@ -24,6 +28,11 @@ static const TokenMapEntry TOKEN_MAP[] = {
     { .kind = TOK_SEMICOLON, .text = ";" },
     { .kind = TOK_COLON, .text = ":" },
     { .kind = TOK_COMMA, .text = "," },
+    { .kind = TOK_L_ARROW, .text = "<-" },
+    { .kind = TOK_BYTE, .text = "byte" },
+    { .kind = TOK_INT16, .text = "int16" },
+    { .kind = TOK_INT32, .text = "int32" },
+    { .kind = TOK_INT64, .text = "int64" },
 };
 
 #define CONCATABLE_TOKENS " (){};:,"
@@ -32,12 +41,27 @@ static const TokenMapEntry TOKEN_MAP[] = {
 #define ARRAY_LENGTH(arr) (sizeof(arr) / sizeof *arr)
 
 
+VarType token_kind_to_vartype(TokenKind kind) {
+    switch(kind) {
+        case TOK_BYTE: return TYPE_BYTE;
+        case TOK_INT16: return TYPE_INT16;
+        case TOK_INT32: return TYPE_INT32;
+        case TOK_INT64: return TYPE_INT64;
+    }
+
+    return TYPE_BYTE;
+}
+
 const char* token_kind_to_str(TokenKind kind) {
     switch(kind) {
         case TOK_IDENTIFIER: return "IDENTIFIER";
         case TOK_LITERAL : return "LITERAL";
         case TOK_VAR : return "VAR";
         case TOK_MOV : return "MOV";
+        case TOK_ADD : return "ADD";
+        case TOK_SUB : return "SUB";
+        case TOK_MUL : return "MUL";
+        case TOK_DIV : return "DIV";
         case TOK_FUNC : return "FUNC";
         case TOK_O_PAREN : return "O_PAREN";
         case TOK_C_PAREN : return "C_PAREN";
@@ -46,8 +70,13 @@ const char* token_kind_to_str(TokenKind kind) {
         case TOK_SEMICOLON : return "SEMI_COLON";
         case TOK_COLON : return "COLON";
         case TOK_COMMA : return "COMMA";
+        case TOK_L_ARROW : return "LEFT_ARROW";
+        case TOK_BYTE : return "BYTE";
+        case TOK_INT16 : return "INT16";
+        case TOK_INT32 : return "INT32";
+        case TOK_INT64 : return "INT64";
         
-        default: return "UNKNOWN";
+        default: return "\033[31mUNKNOWN\033[0m";
                          //case TOK_ : return "";
     }
 }
@@ -199,7 +228,6 @@ TokenArray* tokenize_data(char* data, size_t size) {
         char* word_end = line.ptr + line.len;
         char* word_iter = line.ptr;
         while((word_iter = get_word(&word, word_iter, word_end, CONCATABLE_TOKENS, '\"'))) {
-
             add_token(token_array, word);
 
             printf("\033[32m(\033[0m");
