@@ -14,6 +14,7 @@ typedef struct {
 TokenMapEntry;
 
 static const TokenMapEntry TOKEN_MAP[] = {
+    { .kind = TOK_RET, .text = "ret" },
     { .kind = TOK_VAR, .text = "var" },
     { .kind = TOK_MOV, .text = "mov" },
     { .kind = TOK_ADD, .text = "add" },
@@ -37,7 +38,7 @@ static const TokenMapEntry TOKEN_MAP[] = {
 
 #define CONCATABLE_TOKENS " (){};:,"
 
-#define TOK_COMMENT_CHAR '|'
+#define TOK_COMMENT_CHAR '#'
 #define ARRAY_LENGTH(arr) (sizeof(arr) / sizeof *arr)
 
 
@@ -49,36 +50,43 @@ VarType token_kind_to_vartype(TokenKind kind) {
         case TOK_INT64: return TYPE_INT64;
     }
 
-    return TYPE_BYTE;
+    fprintf(stderr, "%s: %s(): Token (%s) does not represent a type!\n",
+            __FILE__, __func__, token_kind_to_str(kind));
+    abort();
+
+    // Unreachable.
+    return TYPE_BYTE; 
 }
 
 const char* token_kind_to_str(TokenKind kind) {
     switch(kind) {
-        case TOK_IDENTIFIER: return "IDENTIFIER";
-        case TOK_LITERAL : return "LITERAL";
-        case TOK_VAR : return "VAR";
-        case TOK_MOV : return "MOV";
-        case TOK_ADD : return "ADD";
-        case TOK_SUB : return "SUB";
-        case TOK_MUL : return "MUL";
-        case TOK_DIV : return "DIV";
-        case TOK_FUNC : return "FUNC";
-        case TOK_O_PAREN : return "O_PAREN";
-        case TOK_C_PAREN : return "C_PAREN";
-        case TOK_OC_PAREN : return "OC_PAREN";
-        case TOK_CC_PAREN : return "CC_PAREN";
-        case TOK_SEMICOLON : return "SEMI_COLON";
-        case TOK_COLON : return "COLON";
-        case TOK_COMMA : return "COMMA";
-        case TOK_L_ARROW : return "LEFT_ARROW";
-        case TOK_BYTE : return "BYTE";
-        case TOK_INT16 : return "INT16";
-        case TOK_INT32 : return "INT32";
-        case TOK_INT64 : return "INT64";
-        
-        default: return "\033[31mUNKNOWN\033[0m";
-                         //case TOK_ : return "";
+        case TOK_IDENTIFIER: return "TOK_IDENTIFIER";
+        case TOK_LITERAL : return "TOK_LITERAL";
+        case TOK_RET : return "TOK_RET";
+        case TOK_VAR : return "TOK_VAR";
+        case TOK_MOV : return "TOK_MOV";
+        case TOK_ADD : return "TOK_ADD";
+        case TOK_SUB : return "TOK_SUB";
+        case TOK_MUL : return "TOK_MUL";
+        case TOK_DIV : return "TOK_DIV";
+        case TOK_FUNC : return "TOK_FUNC";
+        case TOK_O_PAREN : return "TOK_O_PAREN";
+        case TOK_C_PAREN : return "TOK_C_PAREN";
+        case TOK_OC_PAREN : return "TOK_OC_PAREN";
+        case TOK_CC_PAREN : return "TOK_CC_PAREN";
+        case TOK_SEMICOLON : return "TOK_SEMI_COLON";
+        case TOK_COLON : return "TOK_COLON";
+        case TOK_COMMA : return "TOK_COMMA";
+        case TOK_L_ARROW : return "TOK_LEFT_ARROW";
+        case TOK_BYTE : return "TOK_BYTE";
+        case TOK_INT16 : return "TOK_INT16";
+        case TOK_INT32 : return "TOK_INT32";
+        case TOK_INT64 : return "TOK_INT64";
     }
+   
+    fprintf(stderr, "%s: %s(): Warning: some token kind does not return its type in string format.\n",
+            __FILE__, __func__);
+    return "TOK__UNKNOWN_OR_NOT_FULLY_IMPLEMENTED__";
 }
 
 

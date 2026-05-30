@@ -3,9 +3,10 @@
 
 #include <stddef.h>
 #include "types.h"
+#include "token.h"
 
 
-
+/*
 typedef enum {
     IR_FUNC_IMPL,
     IR_NEW_VAR,
@@ -16,10 +17,10 @@ typedef enum {
     IR_OP_DIV,
 }
 IRcmdKind;
-
+*/
 
 typedef struct {
-    IRcmdKind kind;
+    TokenKind kind;
     
     union {
         struct {
@@ -36,8 +37,14 @@ typedef struct {
         struct {
             char* name;
             VarType type;
+            char* init_val;
         }
         new_var;
+
+        struct {
+            char* val;
+        }
+        ret;
     }
     as;
 }
@@ -51,7 +58,6 @@ typedef struct {
 }
 IRcmdArray;
 
-extern const char* ircmd_kind_to_str(IRcmdKind kind);
 extern void ircmd_print(IRcmd* ircmd);
 
 

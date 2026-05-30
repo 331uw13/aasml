@@ -9,6 +9,7 @@
 typedef enum {
     TOK_IDENTIFIER,
     TOK_LITERAL,
+    TOK_RET,
     TOK_VAR,
     TOK_MOV,
     TOK_ADD,

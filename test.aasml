@@ -1,0 +1,7 @@
+
+.func entry
+{
+    var num <- int32, 30;
+    ret num;
+}
+

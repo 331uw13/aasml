@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "fileio.h"
 #include "compiler.h"
@@ -8,7 +10,7 @@
 int main() {
     size_t file_size = 0;
     char* file = NULL;
-    const char* file_name = "test.asm";
+    const char* file_name = "test.aasml";
     
     if(!map_file(file_name, PROT_READ, &file, &file_size)) {
         return 1;
@@ -21,7 +23,6 @@ int main() {
     });
     
     TokenArray* token_array = tokenize_data(file, file_size);
-    printf("========== Tokenizer output ==========\n");
     for(size_t i = 0; i < token_array->count; i++) {
         Token* token = &token_array->tokens[i];
         printf("\033[32m%s\033[0m ", token_kind_to_str(token->kind));
@@ -32,15 +33,26 @@ int main() {
         //printf("%s\n", text == NULL ? "null" : text);
     }
 
+    munmap(file, file_size);
+
+
+
+
 
     IRcmdArray* ircmds = intermediate_codegen(token_array);
-    printf("========== IR gen output ==========\n");
-    
-    for(size_t i = 0; i < ircmds->count; i++) {
-        ircmd_print(&ircmds->commands[i]);
-    }
+  
+   
+    int file_out_fd = open("output.asm", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
 
-    munmap(file, file_size);
+    cg_set_altoutput_fd(file_out_fd);
+    codegen_gnu_as_x86_64(ircmds);
+
+    printf("\033[1;32m(assemble_and_link)\033[0m\n");
+    system("./assemble_and_link.sh output.asm");
+
+    close(file_out_fd);
+    printf("\n\n");
     return 0;
 }
+
