@@ -75,6 +75,8 @@ const char* ircmd_kind_to_str(IRcmdKind kind) {
 }
 */
 
+
+
 IRcmdArray* intermediate_codegen(TokenArray* token_array) {
     IRcmdArray* ircmds = malloc(sizeof *ircmds);
     ircmds->commands = NULL;
@@ -99,6 +101,31 @@ IRcmdArray* intermediate_codegen(TokenArray* token_array) {
 
         switch(token->kind) {
 
+
+            /*
+            case TOK_FUNC:
+                {
+                    Token* tok_name_ident = token + 1;
+                    cmd.as.func_impl.name = strdup(tok_name_ident->text);
+
+                    add_ircmd(ircmds, cmd);
+                    num_skip = 1;
+                }
+                break;
+
+            case TOK_RET:
+                {
+                    Token* tok_name_ident = token + 1;
+                    
+                    cmd.as.ret.val = strdup(tok_name_ident->text);
+                    add_ircmd(ircmds, cmd);
+                
+                    num_skip = 1;
+                }
+                break;
+                */
+    
+            /*
             case TOK_RET:
                 {
                     Token* tok_name_ident = token + 1;
@@ -152,7 +179,7 @@ IRcmdArray* intermediate_codegen(TokenArray* token_array) {
                     num_skip = 2;
                 }
                 break;
-
+                */
 
                 IRGEN_IGNORE_TOKEN_KINDS
                 break;

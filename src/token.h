@@ -6,6 +6,7 @@
 #include "types.h"
 
 
+
 typedef enum {
     TOK_IDENTIFIER,
     TOK_LITERAL,
@@ -33,12 +34,54 @@ typedef enum {
 TokenKind;
 
 
+typedef enum {
+    OPERAND_VARIABLE,
+    OPERAND_LITERAL_INT,
+    OPERAND_LITERAL_STRING
+}
+OperandKind;
+
+
+typedef enum {
+    P_OPERATION,
+    P_FUNCTION_IMPL
+}
+ParsedTokenKind;
+
 typedef struct {
-    TokenKind kind;
+    char*       text; // <- Content differs from what the operand is.
+    VarType     type;
+    OperandKind kind;
+}
+Operand;
+
+typedef struct {
+    Operand lhs;
+    Operand rhs;
+}
+Operation;
+
+typedef struct {
     char*     text;
+    TokenKind kind;
+
+    bool is_parsed;
+    struct {
+        ParsedTokenKind p_kind;
+        union {
+            Operation operation;
+        
+            struct {
+                char* name;
+                VarType ret_type;
+            }
+            function_impl;
+        }
+        as;
+    }
+    parsed;
 }
 Token;
-
 
 typedef struct {
     Token* tokens;

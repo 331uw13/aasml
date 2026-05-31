@@ -35,24 +35,23 @@ int main() {
 
     munmap(file, file_size);
 
+    parse_tokens(token_array);
 
 
 
-
-    IRcmdArray* ircmds = intermediate_codegen(token_array);
-  
-   
     int file_out_fd = open("output.asm", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
 
     cg_set_altoutput_fd(file_out_fd);
-    codegen_gnu_as_x86_64(ircmds);
+    codegen_gnu_as_x86_64(token_array);
 
+    
+    close(file_out_fd);
+    /*
     printf("\033[1;32m(assemble, link and execute)\033[0m\n");
     system("./assemble_and_link.sh output.asm");
 
-    close(file_out_fd);
-    printf("\n\n");
+    */
     return 0;
 }
 

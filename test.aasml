@@ -1,7 +1,12 @@
 
-.func entry
+.func entry <- byte
 {
-    var num <- int32, 30;
-    ret num;
+    var aaa <- int32, 5
+    var num <- int32, 30
+
+    add num, 1
+    add num, aaa
+
+    ret num
 }
 

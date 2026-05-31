@@ -11,8 +11,9 @@
 
 
 extern TokenArray* tokenize_data(char* data, size_t size);
+extern void        parse_tokens(TokenArray* token_array);
 //extern void        check_syntax(TokenArray* token_array);
-extern IRcmdArray* intermediate_codegen(TokenArray* token_array);
+//extern IRcmdArray* intermediate_codegen(TokenArray* token_array);
 
 
 

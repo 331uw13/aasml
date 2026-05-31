@@ -6,45 +6,18 @@
 #include "token.h"
 
 
-/*
-typedef enum {
-    IR_FUNC_IMPL,
-    IR_NEW_VAR,
-    IR_OP_MOV,
-    IR_OP_ADD,
-    IR_OP_SUB,
-    IR_OP_MUL,
-    IR_OP_DIV,
+typedef struct {
+    char* text;
+    OperandKind kind;
 }
-IRcmdKind;
-*/
+IROperand;
 
 typedef struct {
     TokenKind kind;
-    
+   
+
     union {
-        struct {
-            char* name;
-        }
-        func_impl;
 
-        struct {
-            char* lhs_name;
-            char* rhs_name;
-        }
-        op;
-
-        struct {
-            char* name;
-            VarType type;
-            char* init_val;
-        }
-        new_var;
-
-        struct {
-            char* val;
-        }
-        ret;
     }
     as;
 }

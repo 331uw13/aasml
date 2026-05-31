@@ -2,6 +2,7 @@
 #define STACK_FRAME_H
 
 #include <stdint.h>
+#include "../types.h"
 
 // TODO: Replace this later with a hashmap or something.
 //       this may get pretty slow...
@@ -22,7 +23,8 @@ typedef struct StackFrameVarInfo_t {
     char*        name;
     VariableSize size;
 
-    int          offset; // <- Set by 'stackframe_add()'
+    int          offset;   // Set by 'stackframe_add()'
+    VarType      var_type; // Not needed to be set in assembly code generation step.
 }
 StackFrameVarInfo;
 
@@ -39,5 +41,6 @@ StackFrame stackframe_init_empty();
 void stackframe_free                     (StackFrame* sf);
 StackFrameVarInfo* stackframe_add        (StackFrame* sf, StackFrameVarInfo varinfo);
 StackFrameVarInfo* stackframe_get        (StackFrame* sf, char* var_name);
+
 
 #endif
