@@ -48,7 +48,7 @@ int main() {
     cg_set_altoutput_fd(file_out_fd);
     codegen_gnu_as_x86_64(ircmds);
 
-    printf("\033[1;32m(assemble_and_link)\033[0m\n");
+    printf("\033[1;32m(assemble, link and execute)\033[0m\n");
     system("./assemble_and_link.sh output.asm");
 
     close(file_out_fd);

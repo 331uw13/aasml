@@ -5,7 +5,7 @@ CCFLAGS = \
         -Wall \
         -Wextra \
 
-LDFLAGS = 
+LDFLAGS = -lm
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 

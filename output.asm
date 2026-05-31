@@ -10,6 +10,7 @@ _start:
 entry:
 	pushq %rbp
 	movq %rsp, %rbp
-	movl $30, -4(%rbp)
+	movl $30, -4(%rbp) # "num"
+	movl -4(%rbp), %r8d
 	popq %rbp
 	ret
